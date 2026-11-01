@@ -1,0 +1,24 @@
+=== C49 PoC: Zabbix usermacro.get missing ugsetid filter ===
+Target release: 7.4.16 (tag 6077373a10ff55772f566646244e2b0cb562ef2e)
+Fix (unreleased on release/7.4): 3bdf6c3ec5 / merge cbf8984bed (DEV-4859)
+
+--- VULNERABLE query (7.4.16, no p.ugsetid filter) as ugsetid=10 ---
+  VISIBLE: hostmacroid=1 hostid=101 {$DB_PASSWORD}=s3cret-host1
+  VISIBLE: hostmacroid=2 hostid=102 {$API_TOKEN}=tok-host2-LEAK
+  VISIBLE: hostmacroid=3 hostid=102 {$SNMP_COMMUNITY}=private-leak
+  count=3
+--- FIXED query (DEV-4859, with p.ugsetid=caller) as ugsetid=10 ---
+  VISIBLE: hostmacroid=1 hostid=101 {$DB_PASSWORD}=s3cret-host1
+  count=1
+--- NEGATIVE: ugsetid=0 early-deny (both paths) ---
+  count=0 (expect 0)
+
+--- Checks ---
+[PASS] vuln sees authorized host1 macros
+[PASS] vuln LEAKS unauthorized host2 macros
+[PASS] leak includes {$API_TOKEN}
+[PASS] fixed keeps host1
+[PASS] fixed blocks host2
+[PASS] ugsetid=0 returns empty
+sha256 vuln_snippet.php = ee761bfe160dbb35aad6b6586611eb22c74fdb2a7ec0e83c8f90acd94e14c211
+sha256 fix_snippet.php = 6d02fbd1ff6762b7bc148fdcd5eaf6c55ff69ac38f42cb0b54287bfb3e95b2f0

@@ -1,0 +1,7 @@
+zabbix-7.4.16 tag: 6077373a10ff55772f566646244e2b0cb562ef2e
+zabbix-7.4.16.tar.gz sha256: 0e2c391dc184acce8e34250e7326a51e19c8bcee31e67b8497f5526247ecd261
+URL: https://cdn.zabbix.com/zabbix/sources/stable/7.4/zabbix-7.4.16.tar.gz
+fix leaf (release/7.4): 3bdf6c3ec5d3edf77fd971b424c2ae7b41424f6d
+fix merge (release/7.4): cbf8984bed9076f83f081c96552ee961ce2523f8
+also vulnerable: 7.0.32 (fix on release/7.0 not tagged)
+PoC run: 2026-11-02 00:04:09 CST
